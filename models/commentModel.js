@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../config/db');
 
 const commentSchema = new mongoose.Schema({
   text: {
@@ -7,15 +7,15 @@ const commentSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User', // Reference to the User model
     required: true,
   },
   post: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Post',
+    ref: 'Post', // Reference to the Post model
     required: true,
   },
- 
+  // other fields...
 });
 
 const Comment = mongoose.model('Comment', commentSchema);
