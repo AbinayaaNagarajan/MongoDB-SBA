@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../config/db');
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User', // Reference to the User model
     required: true,
   },
  
