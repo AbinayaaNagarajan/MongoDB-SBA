@@ -21,10 +21,47 @@ const createComment = async (req, res) => {
   }
 };
 
-// other functions...
+const updateComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { username, email } = req.body;
+
+  try {
+    const updatedComment = await Comment.findOneAndUpdate(
+      { _id: commentId },
+      { username, email },
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    res.json(updatedComment);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  const { commentId } = req.params;
+
+  try {
+    const deletedComment = await Comment.deleteOne({ _id: commentId });
+
+    if (deletedComment.deletedCount === 0) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   getAllComments,
   createComment,
+  updateComment,
+  deleteComment,
   // other exported functions...
 };
