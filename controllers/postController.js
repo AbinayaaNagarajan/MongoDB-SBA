@@ -48,21 +48,14 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { postId } = req.params;
-  const { username, email } = req.body;
-
-  // Validate request data
-  updatePostValidationRules.forEach(validation => validation(req, res));
-
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+  const { title, content} = req.body;
 
   try {
     const updatedPost = await Post.findOneAndUpdate(
-      { _id: postId },
-      { username, email },
-      { new: true }
+      { _id: postId }, //condition
+      { title, content },
+      {new : true}
+      
     );
 
     if (!updatedPost) {
@@ -81,7 +74,6 @@ const deletePost = async (req, res) => {
 
   try {
     const deletedPost = await Post.deleteOne({ _id: postId });
-    db.posts.deleteOne({ _id: ObjectId("65bb02953dfbee0337ffe366") })
 
     if (deletedPost.deletedCount === 0) {
       return res.status(404).json({ error: 'Post not found' });

@@ -1,4 +1,6 @@
 const Comment = require('../models/commentModel');
+const Post = require('../models/postModel');
+const User = require('../models/userModel');
 
 // Implement your CRUD operations here (GET, POST, PUT/PATCH, DELETE)
 // Example functions:
@@ -12,8 +14,16 @@ const getAllComments = async (req, res) => {
 };
 
 const createComment = async (req, res) => {
+
+  
   try {
-    const { text, author, post } = req.body;
+  const { text, authorId, postId } = req.body;
+
+   let author = await User.findById(authorId);
+   let post = await Post.findById(postId);
+
+
+   // const { text, authorId, postId } = req.body;
     const comment = await Comment.create({ text, author, post });
     res.status(201).json(comment);
   } catch (error) {
@@ -23,12 +33,12 @@ const createComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
   const { commentId } = req.params;
-  const { username, email } = req.body;
+  const { text} = req.body;
 
   try {
     const updatedComment = await Comment.findOneAndUpdate(
       { _id: commentId },
-      { username, email },
+      { text },
       { new: true }
     );
 
